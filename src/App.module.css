@@ -1,0 +1,9 @@
+.wrapper {
+    max-width: 90rem;
+    width: 736;
+    margin: auto;
+
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
