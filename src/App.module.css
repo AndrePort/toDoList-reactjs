@@ -1,9 +1,22 @@
-.wrapper {
-    max-width: 90rem;
-    width: 736;
-    margin: auto;
+.app {
+    display:grid;
+    justify-items: center;
+}
 
-    display: grid;
-    justify-content: center;
-    align-items: center;
+.wrapper {
+    width: 39.68rem;
+    padding: 0 1rem 2rem 1rem;
+
+    display: flex;
+    justify-items: center;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 87.5%;
+    }
+
+    .wrapper {
+        width: 100%;
+    }
 }

@@ -1,6 +1,4 @@
 .content {
-    width: 100%;
-    max-width: 46rem;
     min-height: 4.5rem;
     height: auto;
     background: var(--gray-500);
@@ -16,10 +14,7 @@
 }
 
 .content span {
-    flex: 1;
     wordWrap: break-word;
-    max-width: 36rem;
-    overflow: hidden;
 }
 
 .content button {

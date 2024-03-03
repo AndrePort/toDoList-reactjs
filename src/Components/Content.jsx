@@ -25,9 +25,7 @@ export function Content({ task, onTaskCheck, onDeleteTask }) {
     };
 
     function handleDeleteTask() {
-        return (
-            onDeleteTask(task.id)
-        )
+      onDeleteTask(task.id)
     }
   
     const imageSrc = task.isChecked

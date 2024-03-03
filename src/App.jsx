@@ -10,8 +10,10 @@ export function App() {
     <div>
       <Header />
 
-      <div className={styles.wrapper}>
-        <TasksList />
+      <div className={styles.app}>
+        <div className={styles.wrapper}>
+          <TasksList />
+        </div>
       </div>
     </div>
     

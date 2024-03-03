@@ -2,19 +2,31 @@ import { useState } from 'react';
 import { Content } from './Content';
 import styles from './TasksList.module.css';
 import { v4 as uuidv4 } from 'uuid';
+import { Toaster, toast } from 'sonner';
 
 import plus from '../assets/plus.svg'
 import { EmptyTasks } from './EmptyTasks';
 
 
 export function TasksList() {
-   const [tasks, setTasks] = useState([])
+   const [tasks, setTasks] = useState(() => {
+      const taskOnStorage = localStorage.getItem('tasks');
+
+      if (taskOnStorage) {
+         return JSON.parse(taskOnStorage)
+      }
+
+      return[]
+   })
 
    const [newCommentedTask, setNewCommentedTask] = useState('')
 
-
    function handleCreatNewTask(event) {
          event.preventDefault()
+
+         if (newCommentedTask === '') {
+            return
+         }
 
          const newTask = {
             id: uuidv4(),
@@ -22,7 +34,12 @@ export function TasksList() {
             isChecked: false,
          }
 
-         setTasks([...tasks, newTask]);
+         const updatedTasks = [...tasks, newTask];
+
+         setTasks(updatedTasks)
+
+         localStorage.setItem('tasks', JSON.stringify(updatedTasks))
+
          setNewCommentedTask('');
    }
 
@@ -36,32 +53,42 @@ export function TasksList() {
 
    function handleTaskCheck(taskId) {
       setTasks((prevTasks) => {
-         return prevTasks.map((task) => 
-         task.id === taskId ? { ...task, isChecked: !task.isChecked } : task
+         const updatedTasks = prevTasks.map((task) => 
+            task.id === taskId ? { ...task, isChecked: !task.isChecked } : task
          );
+
+         localStorage.setItem('tasks', JSON.stringify(updatedTasks))
+
+         return updatedTasks
       })
    }
 
    function deleteTask(taskToDelete) {
-      const deleteOneTask = tasks.filter(task => {
-         return task.id !== taskToDelete
-      })
-
+      const deleteOneTask = tasks.filter(task => task.id !== taskToDelete)
       setTasks(deleteOneTask)
+
+      localStorage.setItem('tasks', JSON.stringify(deleteOneTask))
    }
 
    return (
-      <div>
-         <div className={styles.search}>
+      <article>
+         <Toaster 
+            position="top-right" 
+            toastOptions={{
+               style: { background: 'var(--gray-100)', color: 'var(--blue)'},
+               className: 'my-toast',
+            }}
+         />
+
+         <div>
             <form onSubmit={handleCreatNewTask} className={styles.searchForm}>
                <textarea
                   name="content"
                   placeholder='Adicione uma nova tarefa'
                   value={newCommentedTask}
                   onChange={handleChangeNewTask}
-               
                />
-               <button type='submit'>
+               <button type='submit' onClick={() => {newCommentedTask && toast.success('Tarefa criada com sucesso')}}>
                   <p>Criar</p>
                   <img src={plus} alt="Plus Icon" />
                </button>
@@ -93,6 +120,6 @@ export function TasksList() {
                : <EmptyTasks />
             }
          </div>
-      </div>
+      </article>
    )
 }
